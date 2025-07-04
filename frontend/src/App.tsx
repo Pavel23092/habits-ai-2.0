@@ -32,7 +32,7 @@ function App() {
         // ВАЖНО: Если ваш бэкенд на vercel.app, здесь будет его URL
         // Например: 'https://ваш-backend-проект.vercel.app/api/createUser'
         // Для локального теста - http://localhost:3000
-        const backendUrl = 'http://localhost:3000'; // Используем локальный для теста
+        const backendUrl = 'https://habits-ai-20-15s894u4d-pavel23092s-projects.vercel.app'; // Используем локальный для теста
 
         const response = await axios.post(`${backendUrl}/api/createUser`, {
           telegram_id: tempTelegramId,
