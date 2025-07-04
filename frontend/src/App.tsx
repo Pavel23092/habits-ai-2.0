@@ -29,11 +29,9 @@ function App() {
         const tempTelegramId = Math.floor(Math.random() * 1000000000);
         const tempUsername = `User_${tempTelegramId}`;
         
-        // ВАЖНО: Если ваш бэкенд на vercel.app, здесь будет его URL
-        // Например: 'https://ваш-backend-проект.vercel.app/api/createUser'
-        // Для локального теста - http://localhost:3000
-        const backendUrl = 'https://habits-ai-20-15s894u4d-pavel23092s-projects.vercel.app'; // Используем локальный для теста
-
+        // ВАЖНО: Это URL ВАШЕГО РАЗВЕРНУТОГО БЭКЕНДА на Vercel!
+        const backendUrl = 'https://habits-ai-20-15s894u4d-pavel23092s-projects.vercel.app'; 
+        
         const response = await axios.post(`${backendUrl}/api/createUser`, {
           telegram_id: tempTelegramId,
           username: tempUsername,
@@ -45,15 +43,19 @@ function App() {
         
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          setResponseMessage('Ошибка создания пользователя:');
+          // Если это ошибка Axios и есть ответ от сервера
+          setResponseMessage('Ошибка от сервера:');
           setResponseDetails(JSON.stringify(error.response.data, null, 2));
         } else {
-          setResponseMessage('Произошла неизвестная ошибка');
-          setResponseDetails('');
+          // Если произошла другая (неизвестная) ошибка
+          const unknownError = error as Error; // Приводим к типу Error
+          setResponseMessage(`Произошла неизвестная ошибка: ${unknownError.message}`);
+          setResponseDetails(unknownError.toString()); // Дополнительные детали
         }
         setCurrentStep('error_display'); // Переход к экрану ошибки
       }
     }
+    // ... Здесь будут другие шаги
   };
 
   const renderContent = () => {
@@ -76,7 +78,7 @@ function App() {
               onChange={(e) => setUserInput({ ...userInput, goal: e.target.value })}
               placeholder="Например: стать продуктивнее"
               rows={4}
-              style={{ width: '80%', padding: '10px' }} // Самые базовые стили
+              style={{ width: '80%', padding: '10px' }} 
             />
             <button onClick={handleNextStep}>Продолжить</button>
           </>
